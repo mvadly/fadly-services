@@ -2,7 +2,7 @@ services:
   apache:
     image: "webdevops/php-apache:7.4-alpine"
     volumes:
-      - D:/Projects/Nginx:/app
+      - .\php-app:/app
     ports:
       - "80:80"
       - "8000:8000"
@@ -18,9 +18,9 @@ services:
   mysql:
     image: "mysql:5.7"
     volumes:
-      - D:/Projects/Docker/mysql/data:/var/lib/mysql
-      - D:/Projects/Docker/mysql:/home
-      - D:/Projects/Docker/mysql/config/my.cnf:/etc/mysql/conf.d/my.cnf
+      - .\services\mysql\data:/var/lib/mysql
+      # - D:/Projects/Docker/mysql:/home
+      - .\services\mysql\config\my.cnf:/etc/mysql/conf.d/my.cnf
     ports:
       - "3306:3306"
     environment:
@@ -31,9 +31,9 @@ services:
 
   api-go:
     build:
-      context: D:/Projects/Docker/fadly-services/services/go
+      context: .\services\go
     volumes:
-      - D:/Projects/GO:/app
+      - .\go-app:/app
     ports:
       - "9000:9000"
       - "8081:8081"

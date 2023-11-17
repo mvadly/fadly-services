@@ -1,3 +1,6 @@
 /services/mysql/data/*
+!/services/mysql/data/README.md
 /go-app/*
+!/go-app/README.md
 /php-app/*
+!/php-app/README.md
