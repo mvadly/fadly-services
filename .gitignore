@@ -1,0 +1,3 @@
+/services/mysql/data/*
+/go-app/*
+/php-app/*

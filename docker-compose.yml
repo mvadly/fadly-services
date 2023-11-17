@@ -1,43 +1,45 @@
 services:
-  # nginx:
-  #   image: "webdevops/php-nginx:8.0-alpine"
-  #   volumes:
-  #     - D:/Projects/Nginx:/app
-  #   ports:
-  #     - "80:80"
-  #     - "443:443"
-  #   networks:
-  #     - mvnetwork
   apache:
-    image: "webdevops/php-apache:7.2-alpine"
+    image: "webdevops/php-apache:7.4-alpine"
     volumes:
       - D:/Projects/Nginx:/app
     ports:
       - "80:80"
-      - "443:443"
+      - "8000:8000"
     networks:
       - mvnetwork
-  # nginx:
-  #   image: "fathoniadi/nginx-php:deb-7.2-latest"
-  #   volumes:
-  #     - D:/Projects/Nginx:/var/www/html
-  #   ports:
-  #     - "80:80"
-  #     - "443:443"
-  #   networks:
-  #     - mvnetwork
-      
 
+  redis:
+    image: "redis:alpine3.18"
+    ports:
+      - "6379:6379"
+    networks:
+      - mvnetwork
   mysql:
     image: "mysql:5.7"
     volumes:
+      - D:/Projects/Docker/mysql/data:/var/lib/mysql
       - D:/Projects/Docker/mysql:/home
+      - D:/Projects/Docker/mysql/config/my.cnf:/etc/mysql/conf.d/my.cnf
     ports:
       - "3306:3306"
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: yes
+      TZ: Asia/Jakarta
     networks:
       - mvnetwork
 
+  api-go:
+    build:
+      context: D:/Projects/Docker/fadly-services/services/go
+    volumes:
+      - D:/Projects/GO:/app
+    ports:
+      - "9000:9000"
+      - "8081:8081"
+      - "8888:8888"
+      - "8080:8080"
+    networks:
+      - mvnetwork
 networks:
   mvnetwork:
