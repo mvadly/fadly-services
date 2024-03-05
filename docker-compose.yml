@@ -1,8 +1,9 @@
 services:
   apache:
-    image: "webdevops/php-apache:7.4-alpine"
+    image: "webdevops/php-apache:7.4"
     volumes:
-      - .\php-app:/app
+      # - .\php-app:/app
+      - D:/Projects/PHP:/app
     ports:
       - "80:80"
       - "8000:8000"
@@ -41,5 +42,32 @@ services:
       - "8080:8080"
     networks:
       - mvnetwork
+
+  elasticsearch:
+    image: elasticsearch:7.17.17
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+    networks:
+      - mvnetwork
+
+  apm-server:
+    image: elastic/apm-server:7.17.17
+    ports:
+      - "8200:8200"
+    networks:
+      - mvnetwork
+    # volumes:
+    #   - ./apm-server:/usr/share/apm-server
+    command: --strict.perms=false
+
+  kibana:
+    image: kibana:7.17.17
+    ports:
+      - "5601:5601"
+    networks:
+      - mvnetwork
 networks:
   mvnetwork:
+    driver: bridge
